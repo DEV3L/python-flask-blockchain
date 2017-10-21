@@ -1,0 +1,15 @@
+{
+  "name": "Python Flask Blockchain on Heroku",
+  "description": "A Python Flask Blockchain on Heroku.",
+  "image": "heroku/python",
+  "repository": "https://github.com/DEV3L/python-flask-blockchain",
+  "keywords": [
+    "python",
+    "flask",
+    "blockchain",
+    "cryptocurrency"
+  ],
+  "addons": [
+    ""
+  ]
+}
