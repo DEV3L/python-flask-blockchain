@@ -53,7 +53,7 @@ class Blockchain(object):
         return proof
 
     @property
-    def last_block(self) -> int:
+    def last_block(self) -> dict:
         return self.chain[-1]
 
     @staticmethod
