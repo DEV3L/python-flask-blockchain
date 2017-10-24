@@ -1,7 +1,6 @@
 from uuid import uuid4
 
-from flask import Flask, jsonify
-from flask import request
+from flask import Flask, jsonify, render_template, request
 from flask_script import Manager
 
 from blockchains.blockchain import Blockchain
@@ -16,11 +15,7 @@ blockchain = Blockchain()
 
 @app.route("/")
 def index():
-    return 'GET /mine<br />' \
-           'GET /chain<br />' \
-           'POST /transactions/new<br />' \
-           '&nbsp;&nbsp;{"sender": "my address", "recipient": "other address", "amount": 5}'
-
+    return render_template('blockchain.jinja', some_data='Flask Blockchain')
 
 
 @app.route('/mine', methods=['GET'])
