@@ -104,6 +104,9 @@ class Blockchain(object):
         for node in neighbours:
             response = requests.get(f'http://{node}/chain')
 
+            if response.status_code != 200:
+                response = requests.get(f'https://{node}/chain')
+
             if response.status_code == 200:
                 length = response.json()['length']
                 chain = response.json()['chain']
