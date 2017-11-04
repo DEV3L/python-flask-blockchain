@@ -11,6 +11,26 @@ They’re chained together using hashes.
 - https://hackernoon.com/learn-blockchains-by-building-one-117428612f46
 
 
+# Prerequisites
+* Python 3.6+ installed
+    * <https://www.python.org/downloads/>
+* Virtualenv installed
+    * <https://virtualenv.pypa.io/en/latest/>
+    * sudo pip install --upgrade pip virtualenv virtualenvwrapper
+
+
+## Run
+
+```bash
+mkvirtualenv python-flask-blockchain
+python setup.py develop
+
+python app.py runserver --port 5006
+python app.py runserver --port 5005
+
+```
+
+
 ## Contributing
 
 1. Fork it!
