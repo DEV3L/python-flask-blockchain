@@ -1,12 +1,14 @@
 import hashlib
 import json
+import logging
 from time import time
-from urllib.parse import urlparse
 
 import requests
 
 
 class Blockchain(object):
+    _logger = logging.getLogger('Blockchain')
+
     def __init__(self):
         self.chain = []
         self.current_transactions = []
@@ -60,8 +62,7 @@ class Blockchain(object):
         """
         Add a new node to the list of nodes
         """
-        parsed_url = urlparse(address)
-        self.nodes.add(parsed_url.netloc)
+        self.nodes.add(address)
 
     def valid_chain(self, chain: list) -> bool:
         """
@@ -72,9 +73,9 @@ class Blockchain(object):
 
         while current_index < len(chain):
             block = chain[current_index]
-            print(f'{last_block}')
-            print(f'{block}')
-            print("\n-----------\n")
+            self._logger.info(f'{last_block}')
+            self._logger.info(f'{block}')
+            self._logger.info("\n-----------\n")
             # Check that the hash of the block is correct
             if block['previous_hash'] != self.hash(last_block):
                 return False
@@ -102,10 +103,12 @@ class Blockchain(object):
 
         # Grab and verify the chains from all the nodes in our network
         for node in neighbours:
-            response = requests.get(f'http://{node}/chain')
-
-            if response.status_code != 200:
-                response = requests.get(f'https://{node}/chain')
+            try:
+                response = requests.get(f'{node}/chain')
+            except Exception as e:
+                self._logger.error(f'Removing node from chain: {node}', e)
+                self.nodes.remove(node)
+                continue
 
             if response.status_code == 200:
                 length = response.json()['length']
@@ -115,6 +118,8 @@ class Blockchain(object):
                 if length > max_length and self.valid_chain(chain):
                     max_length = length
                     new_chain = chain
+            else:
+                self._logger.error(f'Could not connect to node: {node}')
 
         # Replace our chain if we discovered a new, valid chain longer than ours
         if new_chain:
